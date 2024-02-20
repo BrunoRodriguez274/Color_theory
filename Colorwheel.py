@@ -1,13 +1,16 @@
 import numpy as np
 import matplotlib.pyplot as plt
+import sys
 
+for arg in sys.argv:
+    print(arg)
 
-
+    
 total_partition = 360
 
 
 
-def create_color_wheel(n_):
+def create_color_wheel(n_, alpha_ = 1):
 
 
     degs_ = np.linspace(0,360,n_)#*(np.pi)/180
@@ -15,7 +18,7 @@ def create_color_wheel(n_):
     breaks.append(360)
 
 
-    print(breaks)
+    #print(breaks)
     cols =[]
 
     rgb = [0,0,255]
@@ -33,7 +36,7 @@ def create_color_wheel(n_):
 
             mod = break_count%2
 
-            print(i, break_count, mod)
+            #print(i, break_count, mod)
 
 
         
@@ -52,13 +55,13 @@ def create_color_wheel(n_):
 
                 rgb[2- int(break_count/2) ] = 255
             else:
-                print((n_/break_count))
+                #print((n_/break_count))
                 rgb[2- int((break_count+1)/2)+1] = 255 
 
                 rgb[2- int((break_count+1)/2) ] = (i - (break_count-1)*(n_/6))*4.25*360/n_ 
                 
-        angle_col =(rgb[0]/255, rgb[1]/255, rgb[2]/255)
-        print(angle_col)
+        angle_col =(alpha_ *rgb[0]/255, alpha_*rgb[1]/255, alpha_*rgb[2]/255)
+        #print(angle_col)
 
         cols.append(angle_col)
 
@@ -68,23 +71,41 @@ def create_color_wheel(n_):
 
 #print(colors)
 
-def plot_circle(n_):
+def plot_circle(n_, **kwargs):
 
-    r = np.ones(n_)
+    alpha_ = kwargs.get("alpha_")
+
+    if alpha_ is None:
+        alpha_ = 1
+
+    r = np.ones(n_)* alpha_
 
     deg = np.linspace(0,360, n_)*(np.pi)/180
     x = r*np.sin(deg)
     y = r*np.cos(deg)
 
-    colors = create_color_wheel(n_)
 
-    print(len(x), len(colors))
+
+
+
+    colors = create_color_wheel(n_, alpha_)
+
+    #print(len(x), len(colors))
     for i in zip(x, y, colors):
         
 
 
-        plt.plot(i[0],i[1], '.', markersize = 30, color = i[2])
-    plt.show()
+
+        plt.plot(i[0],i[1], '.', markersize = 15, color = i[2])
+    #plt.show()
+
+n =10
+for i in range(0,n+1):
+    
+    print(i/n)
 
 
-plot_circle(50)
+    plot_circle(30, alpha_ = i/n)
+
+plt.show()
+
